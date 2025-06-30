@@ -1,0 +1,202 @@
+[
+    {
+        "id": "549a3abb20ef28f3",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "input",
+        "type": "ui_text_input",
+        "z": "549a3abb20ef28f3",
+        "name": "Input Cidade",
+        "label": "Cidade",
+        "tooltip": "",
+        "group": "grupo1",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "cidade",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 170,
+        "y": 380,
+        "wires": [
+            [
+                "store"
+            ]
+        ]
+    },
+    {
+        "id": "store",
+        "type": "function",
+        "z": "549a3abb20ef28f3",
+        "name": "Guardar cidade",
+        "func": "flow.set('cidade', msg.payload);\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "button",
+        "type": "ui_button",
+        "z": "549a3abb20ef28f3",
+        "name": "Buscar Clima",
+        "group": "grupo1",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "🔍 Buscar Clima",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "search",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 170,
+        "y": 440,
+        "wires": [
+            [
+                "prepara-url"
+            ]
+        ]
+    },
+    {
+        "id": "prepara-url",
+        "type": "function",
+        "z": "549a3abb20ef28f3",
+        "name": "Montar URL",
+        "func": "const cidade = flow.get('cidade') || 'Piracicaba';\nconst apikey = 'YOUR_API_KEY_HERE';\nmsg.url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cidade)}&appid=${apikey}&units=metric&lang=pt_br`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 440,
+        "wires": [
+            [
+                "http",
+                "debug"
+            ]
+        ]
+    },
+    {
+        "id": "http",
+        "type": "http request",
+        "z": "549a3abb20ef28f3",
+        "name": "Chamar API",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 570,
+        "y": 440,
+        "wires": [
+            [
+                "tratar"
+            ]
+        ]
+    },
+    {
+        "id": "tratar",
+        "type": "function",
+        "z": "549a3abb20ef28f3",
+        "name": "Tratar dados",
+        "func": "const dados = msg.payload;\nmsg.payload = {\n    cidade: dados.name,\n    clima: dados.weather[0].description,\n    temperatura: dados.main.temp + ' °C',\n    umidade: dados.main.humidity + ' %'\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 440,
+        "wires": [
+            [
+                "template"
+            ]
+        ]
+    },
+    {
+        "id": "template",
+        "type": "ui_template",
+        "z": "549a3abb20ef28f3",
+        "group": "grupo1",
+        "name": "Painel Clima",
+        "order": 3,
+        "width": 6,
+        "height": 4,
+        "format": "<div style=\"padding:10px\">\n  <h3>{{msg.payload.cidade}}</h3>\n  <p>🌤️ Clima: {{msg.payload.clima}}</p>\n  <p>🌡️ Temperatura: {{msg.payload.temperatura}}</p>\n  <p>💧 Umidade: {{msg.payload.umidade}}</p>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 970,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "debug",
+        "type": "debug",
+        "z": "549a3abb20ef28f3",
+        "name": "Ver dados",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "grupo1",
+        "type": "ui_group",
+        "name": "Clima",
+        "tab": "aba1",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "aba1",
+        "type": "ui_tab",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "order": 1
+    }
+]
