@@ -59,4 +59,5 @@ Click Deploy
 Open your browser to:
 
 http://localhost:1880/ui
+
 Type the city name in the input box, click the Search button, and the weather info will appear below.
