@@ -20,6 +20,7 @@ Free account at OpenWeatherMap to get an API key
 1. Clone the repository:
 
 git clone https://github.com/noronhagabriel/Weather-Dashboard-Node-RED.git
+
 cd your-repository
 
 
