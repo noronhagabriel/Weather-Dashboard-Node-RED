@@ -27,7 +27,9 @@ cd your-repository
 2. Install and start Node-RED:
 
 npm install -g node-red
+
 node-red
+
 Open your browser and go to: http://localhost:1880
 
 
@@ -35,6 +37,7 @@ Open your browser and go to: http://localhost:1880
 In the Node-RED menu:
 
 ☰ Menu > Manage palette > Install
+
 Search for: node-red-dashboard and click Install
 
 
@@ -42,6 +45,7 @@ Search for: node-red-dashboard and click Install
 Click on the menu:
 
 ☰ Menu > Import > Clipboard
+
 Paste the flow JSON (provided in this repo or from the example)
 
 Click Import
